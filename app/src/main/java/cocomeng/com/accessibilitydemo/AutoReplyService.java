@@ -304,6 +304,8 @@ public class AutoReplyService extends AccessibilityService {
                 }, 1000);
             } else {
                 back2Home();
+                hasAction = false;
+                test4();
             }
         }
     }
@@ -326,8 +328,8 @@ public class AutoReplyService extends AccessibilityService {
                 }
             }, 1000);
         }
-        //如果还有notification，就继续执行
-        else{
+        //如果还有 notification，就继续执行
+        else {
             //先把当前完成的出队
             intentQueue.poll();
             android.util.Log.i("maptrix", "queue size:"+intentQueue.size());
@@ -380,7 +382,6 @@ public class AutoReplyService extends AccessibilityService {
         }
         if (content.contains("[微信红包]")){
             jobType = 2;
-//            back2Home();
         }
         try {
             pendingIntent.send();
@@ -388,15 +389,6 @@ public class AutoReplyService extends AccessibilityService {
             e.printStackTrace();
             android.util.Log.i("maptrix", "error" + e.toString());
         }
-        //延迟1s后开始第一步
-//        if(jobType == 1) {
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    test1();
-//                }
-//            }, 1000);
-//        }
     }
 
     @SuppressLint("NewApi")
