@@ -146,8 +146,9 @@ public class AutoReplyService extends AccessibilityService {
                                 public void run() {
                                     //先把当前完成的出队
                                     intentQueue.poll();
+                                    android.util.Log.i("maptrix", "queue size:"+intentQueue.size());
                                     if(!intentQueue.isEmpty()){
-                                        final Notification notification = intentQueue.poll();
+                                        final Notification notification = intentQueue.element();
                                         back2Home();
                                         handler.postDelayed(new Runnable() {
                                             @Override
@@ -256,14 +257,14 @@ public class AutoReplyService extends AccessibilityService {
                 //没有了好友请求就退出
                 hasAction = false;
                 names.clear();
-//                performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK) ;
+                test4();
             }
 
             //一般到不了这里
             if(!hasClicked){
                 hasAction = false;
                 names.clear();
-//                performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK) ;
+                test4();
             }
 
         }
@@ -329,8 +330,9 @@ public class AutoReplyService extends AccessibilityService {
         else{
             //先把当前完成的出队
             intentQueue.poll();
+            android.util.Log.i("maptrix", "queue size:"+intentQueue.size());
             if(!intentQueue.isEmpty()){
-                final Notification notification = intentQueue.poll();
+                final Notification notification = intentQueue.element();
                 back2Home();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -360,11 +362,11 @@ public class AutoReplyService extends AccessibilityService {
             //队列为空则立即执行，否则只是加入队列并返回
             if(intentQueue.isEmpty()){
                 intentQueue.add(notification);
+                android.util.Log.i("maptrix", "queue empty, current size:" + intentQueue.size());
                 sendNotification(notification);
             } else {
-                android.util.Log.i("maptrix", "queue not empty, current size:" + intentQueue.size());
                 intentQueue.add(notification);
-
+                android.util.Log.i("maptrix", "queue not empty, current size:" + intentQueue.size());
             }
         }
     }
@@ -378,7 +380,7 @@ public class AutoReplyService extends AccessibilityService {
         }
         if (content.contains("[微信红包]")){
             jobType = 2;
-            back2Home();
+//            back2Home();
         }
         try {
             pendingIntent.send();
@@ -387,14 +389,14 @@ public class AutoReplyService extends AccessibilityService {
             android.util.Log.i("maptrix", "error" + e.toString());
         }
         //延迟1s后开始第一步
-        if(jobType == 1) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    test1();
-                }
-            }, 1000);
-        }
+//        if(jobType == 1) {
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    test1();
+//                }
+//            }, 1000);
+//        }
     }
 
     @SuppressLint("NewApi")
@@ -411,16 +413,16 @@ public class AutoReplyService extends AccessibilityService {
     private boolean findEditText(AccessibilityNodeInfo rootNode, String content) {
         int count = rootNode.getChildCount();
 
-        android.util.Log.d("maptrix", "root class=" + rootNode.getClassName() + "," + rootNode.getText() + "," + count);
+//        android.util.Log.d("maptrix", "root class=" + rootNode.getClassName() + "," + rootNode.getText() + "," + count);
         for (int i = 0; i < count; i++) {
             AccessibilityNodeInfo nodeInfo = rootNode.getChild(i);
             if (nodeInfo == null) {
-                android.util.Log.d("maptrix", "nodeinfo = null");
+//                android.util.Log.d("maptrix", "nodeinfo = null");
                 continue;
             }
 
-            android.util.Log.d("maptrix", "class=" + nodeInfo.getClassName());
-            android.util.Log.e("maptrix", "ds=" + nodeInfo.getContentDescription());
+//            android.util.Log.d("maptrix", "class=" + nodeInfo.getClassName());
+//            android.util.Log.e("maptrix", "ds=" + nodeInfo.getContentDescription());
 //            if (nodeInfo.getContentDescription() != null) {
 //                int nindex = nodeInfo.getContentDescription().toString().indexOf(name);
 //                int cindex = nodeInfo.getContentDescription().toString().indexOf(scontent);
@@ -431,7 +433,7 @@ public class AutoReplyService extends AccessibilityService {
 //                }
 //            }
             if ("android.widget.EditText".equals(nodeInfo.getClassName())) {
-                android.util.Log.i("maptrix", "==================");
+//                android.util.Log.i("maptrix", "==================");
                 Bundle arguments = new Bundle();
                 arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_MOVEMENT_GRANULARITY_INT,
                         AccessibilityNodeInfo.MOVEMENT_GRANULARITY_WORD);
